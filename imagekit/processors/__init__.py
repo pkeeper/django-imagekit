@@ -8,6 +8,6 @@ from both the filesystem and the ORM.
 
 """
 
-from .base import *
-from .crop import *
-from .resize import *
+from imagekit.processors.base import *
+from imagekit.processors.crop import *
+from imagekit.processors.resize import *

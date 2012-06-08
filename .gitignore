@@ -4,6 +4,8 @@
 *.pyc
 .DS_Store
 .tox
+.project
+.pydevproject
 MANIFEST
 build
 dist

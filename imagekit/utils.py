@@ -1,3 +1,4 @@
+from __future__ import with_statement
 import os
 import mimetypes
 import sys
@@ -9,7 +10,6 @@ from django.utils.functional import wraps
 from django.utils.encoding import smart_str, smart_unicode
 
 from .lib import Image, ImageFile, StringIO
-
 
 RGBA_TRANSPARENCY_FORMATS = ['PNG']
 PALETTE_TRANSPARENCY_FORMATS = ['PNG', 'GIF']
@@ -222,6 +222,24 @@ def suggest_extension(name, format):
     return extension
 
 
+class quiet(object):
+    """
+    A context manager for suppressing the stderr activity of PIL's C libraries.
+    Based on http://stackoverflow.com/a/978264/155370
+
+    """
+    def __enter__(self):
+        self.stderr_fd = sys.__stderr__.fileno()
+        self.null_fd = os.open(os.devnull, os.O_RDWR)
+        self.old = os.dup(self.stderr_fd)
+        os.dup2(self.null_fd, self.stderr_fd)
+
+    def __exit__(self, *args, **kwargs):
+        os.dup2(self.old, self.stderr_fd)
+        os.close(self.null_fd)
+        os.close(self.old)
+
+
 def save_image(img, outfile, format, options=None, autoconvert=True):
     """
     Wraps PIL's ``Image.save()`` method. There are two main benefits of using
@@ -264,24 +282,6 @@ def save_image(img, outfile, format, options=None, autoconvert=True):
         pass
 
     return outfile
-
-
-class quiet(object):
-    """
-    A context manager for suppressing the stderr activity of PIL's C libraries.
-    Based on http://stackoverflow.com/a/978264/155370
-
-    """
-    def __enter__(self):
-        self.stderr_fd = sys.__stderr__.fileno()
-        self.null_fd = os.open(os.devnull, os.O_RDWR)
-        self.old = os.dup(self.stderr_fd)
-        os.dup2(self.null_fd, self.stderr_fd)
-
-    def __exit__(self, *args, **kwargs):
-        os.dup2(self.old, self.stderr_fd)
-        os.close(self.null_fd)
-        os.close(self.old)
 
 
 def prepare_image(img, format):
