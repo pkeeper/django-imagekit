@@ -144,7 +144,7 @@ to the ``ImageField`` your spec uses as a source, the spec image is invalidated.
 The default way to validate a cache image is to check to see if the file exists
 and, if not, generate a new one; the default way to invalidate the cache is to
 delete the image. This is a very simple and straightforward way to handle cache
-validation, but it has its drawbacks—for example, checking to see if the image
+validation, but it has its drawbacks - for example, checking to see if the image
 exists means frequently hitting the storage backend.
 
 Because of this, ImageKit allows you to define custom image cache backends. To
@@ -174,8 +174,8 @@ about ImageKit there.
 Contributing
 ------------
 
-We love contributions! And you don't have to be an expert with the library—or
-even Django—to contribute either: ImageKit's processors are standalone classes
+We love contributions! And you don't have to be an expert with the library - or
+even Django - to contribute either: ImageKit's processors are standalone classes
 that are completely separate from the more intimidating internals of Django's
 ORM. If you've written a processor that you think might be useful to other
 people, open a pull request so we can take a look!
